@@ -17,7 +17,3 @@ export type Gettable<A> = {
 export type LazyObservable<A> = Gettable<A> & {
   observe: (observer: Lambda) => Lambda
 }
-
-export type ObservableValue<T> =
-  | (Observable<T> & Gettable<T> & Settable<T>)
-  | LazyObservable<T>
