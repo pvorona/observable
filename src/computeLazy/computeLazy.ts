@@ -61,7 +61,7 @@ export function computeLazy<A>(
   compute: (...args: unknown[]) => A,
 ): LazyObservable<A> {
   const observers: Lambda[] = []
-  let value: A | undefined
+  let value: A
   let dirty = true
 
   for (const dep of deps) {
