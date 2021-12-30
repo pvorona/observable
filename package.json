@@ -1,6 +1,6 @@
 {
   "name": "@pvorona/observable",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Zero dependencies high-performant abstractions for propagating state changes and managing animations.",
   "main": "src/index.ts",
   "scripts": {
