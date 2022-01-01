@@ -1,11 +1,12 @@
-import { Lambda, Observable, LazyObservable, Gettable } from '../types'
+import { Lambda, LazyObservable, Gettable, Observable } from '../types'
 import { Transition } from '../transition'
 import { createTask, tasks, TASK, Task } from '../rendering'
 
 export function animationObservable<A>(
-  innerObservable: (Observable<A> & Gettable<A>) | LazyObservable<A>,
+  innerObservable: Observable<A> & Gettable<A>,
   initialTransition: Transition<A>,
-): LazyObservable<A> & { setTransition: (transition: Transition<A>) => void } {
+): LazyObservable &
+  Gettable<A> & { setTransition: (transition: Transition<A>) => void } {
   const observers: Lambda[] = []
   let futureTask: Task | undefined = undefined
   let transition = initialTransition

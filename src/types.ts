@@ -2,7 +2,7 @@ export type Lambda = () => void
 
 export type Observer<A> = (value: A) => void
 
-export type Observable<A> = {
+export type EagerObservable<A> = {
   observe: (observer: Observer<A>) => Lambda
 }
 
@@ -14,6 +14,8 @@ export type Gettable<A> = {
   get: () => A
 }
 
-export type LazyObservable<A> = Gettable<A> & {
+export type LazyObservable = {
   observe: (observer: Lambda) => Lambda
 }
+
+export type Observable<T> = EagerObservable<T> | LazyObservable

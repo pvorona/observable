@@ -1,51 +1,48 @@
-import { Lambda, Observable, Gettable, LazyObservable } from '../types'
+import { Lambda, Gettable, Observable } from '../types'
 import { createScheduleEffect as defaultCreateScheduleEffect } from '../rendering'
 
 export function effect<A>(
-  deps: [(Observable<A> & Gettable<A>) | LazyObservable<A>],
+  deps: [Observable<A> & Gettable<A>],
   observer: (valueA: A) => void,
   createScheduleEffect?: (l: Lambda) => Lambda,
 ): Lambda
 export function effect<A, B>(
-  deps: [
-    (Observable<A> & Gettable<A>) | LazyObservable<A>,
-    (Observable<B> & Gettable<B>) | LazyObservable<B>,
-  ],
+  deps: [Observable<A> & Gettable<A>, Observable<B> & Gettable<B>],
   observer: (valueA: A, valueB: B) => void,
   createScheduleEffect?: (l: Lambda) => Lambda,
 ): Lambda
 export function effect<A, B, C>(
   deps: [
-    (Observable<A> & Gettable<A>) | LazyObservable<A>,
-    (Observable<B> & Gettable<B>) | LazyObservable<B>,
-    (Observable<C> & Gettable<C>) | LazyObservable<C>,
+    Observable<A> & Gettable<A>,
+    Observable<B> & Gettable<B>,
+    Observable<C> & Gettable<C>,
   ],
   observer: (valueA: A, valueB: B, valueC: C) => void,
   createScheduleEffect?: (l: Lambda) => Lambda,
 ): Lambda
 export function effect<A, B, C, D>(
   deps: [
-    (Observable<A> & Gettable<A>) | LazyObservable<A>,
-    (Observable<B> & Gettable<B>) | LazyObservable<B>,
-    (Observable<C> & Gettable<C>) | LazyObservable<C>,
-    (Observable<D> & Gettable<D>) | LazyObservable<D>,
+    Observable<A> & Gettable<A>,
+    Observable<B> & Gettable<B>,
+    Observable<C> & Gettable<C>,
+    Observable<D> & Gettable<D>,
   ],
   observer: (valueA: A, valueB: B, valueC: C, valueD: D) => void,
   createScheduleEffect?: (l: Lambda) => Lambda,
 ): Lambda
 export function effect<A, B, C, D, E>(
   deps: [
-    (Observable<A> & Gettable<A>) | LazyObservable<A>,
-    (Observable<B> & Gettable<B>) | LazyObservable<B>,
-    (Observable<C> & Gettable<C>) | LazyObservable<C>,
-    (Observable<D> & Gettable<D>) | LazyObservable<D>,
-    (Observable<E> & Gettable<E>) | LazyObservable<E>,
+    Observable<A> & Gettable<A>,
+    Observable<B> & Gettable<B>,
+    Observable<C> & Gettable<C>,
+    Observable<D> & Gettable<D>,
+    Observable<E> & Gettable<E>,
   ],
   observer: (valueA: A, valueB: B, valueC: C, valueD: D, valueE: E) => void,
   createScheduleEffect?: (l: Lambda) => Lambda,
 ): Lambda
 export function effect(
-  deps: ((Observable<unknown> & Gettable<unknown>) | LazyObservable<unknown>)[],
+  deps: (Observable<unknown> & Gettable<unknown>)[],
   observer: (...args: unknown[]) => void,
   createScheduleEffect: (l: Lambda) => Lambda = defaultCreateScheduleEffect,
 ): Lambda {

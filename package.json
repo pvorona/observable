@@ -1,13 +1,13 @@
 {
   "name": "@pvorona/observable",
-  "version": "1.0.5",
+  "version": "2.0.0",
   "description": "Zero dependencies high-performant abstractions for propagating state changes and managing animations.",
   "main": "src/index.ts",
   "scripts": {
     "test": "jest --collectCoverage",
     "lint": "eslint src --fix",
     "prettier": "prettier src -c -w",
-    "typescript": "tsc",
+    "typescript": "tsc --noEmit",
     "verify": "npm run lint && npm run prettier && npm run typescript"
   },
   "author": "pvorona",

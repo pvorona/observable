@@ -1,8 +1,8 @@
-import { Observer, Observable, Settable, Gettable } from '../types'
+import { Observer, EagerObservable, Settable, Gettable } from '../types'
 
 export function observable<A>(
   initialValue: A,
-): Observable<A> & Settable<A> & Gettable<A> {
+): EagerObservable<A> & Settable<A> & Gettable<A> {
   let value = initialValue
   const observers: Observer<A>[] = []
 

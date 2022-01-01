@@ -1,26 +1,27 @@
 import { observable } from '../observable'
-import { Observable, Settable, Gettable } from '../types'
+import { EagerObservable, Settable, Gettable } from '../types'
 
+// can be implemented in terms of observe?
 export function compute<A, O>(
-  deps: [Observable<A> & Gettable<A>],
+  deps: [EagerObservable<A> & Gettable<A>],
   compute: (valueA: A) => O,
-): Observable<O> & Gettable<O> & Settable<O>
+): EagerObservable<O> & Gettable<O> & Settable<O>
 export function compute<A, B, O>(
-  deps: [Observable<A> & Gettable<A>, Observable<B> & Gettable<B>],
+  deps: [EagerObservable<A> & Gettable<A>, EagerObservable<B> & Gettable<B>],
   compute: (valueA: A, valueB: B) => O,
-): Observable<O> & Gettable<O> & Settable<O>
+): EagerObservable<O> & Gettable<O> & Settable<O>
 export function compute<A, B, C, O>(
   deps: [
-    Observable<A> & Gettable<A>,
-    Observable<B> & Gettable<B>,
-    Observable<C> & Gettable<C>,
+    EagerObservable<A> & Gettable<A>,
+    EagerObservable<B> & Gettable<B>,
+    EagerObservable<C> & Gettable<C>,
   ],
   compute: (valueA: A, valueB: B, valueC: C) => O,
-): Observable<O> & Gettable<O> & Settable<O>
+): EagerObservable<O> & Gettable<O> & Settable<O>
 export function compute(
-  deps: (Observable<unknown> & Gettable<unknown>)[],
+  deps: (EagerObservable<unknown> & Gettable<unknown>)[],
   compute: (...args: unknown[]) => unknown,
-): Observable<unknown> & Gettable<unknown> & Settable<unknown> {
+): EagerObservable<unknown> & Gettable<unknown> & Settable<unknown> {
   const obs = observable(recompute())
 
   const unobserves = deps.map(dep => dep.observe(onChange))

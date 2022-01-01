@@ -1,4 +1,4 @@
-import { shallowEqual } from './shallowEqual'
+import { shallowEqual } from './utils/shallowEqual'
 
 export interface Transition<A> {
   getState: () => A
