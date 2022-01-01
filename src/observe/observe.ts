@@ -26,6 +26,54 @@ export function observe<A, B, C, D>(
   ],
   observer: (valueA: A, valueB: B, valueC: C, valueD: D) => void,
 ): Lambda
+export function observe<A, B, C, D, E>(
+  deps: [
+    Observable<A> & Gettable<A>,
+    Observable<B> & Gettable<B>,
+    Observable<C> & Gettable<C>,
+    Observable<D> & Gettable<D>,
+    Observable<E> & Gettable<E>,
+  ],
+  observer: (valueA: A, valueB: B, valueC: C, valueD: D, valueE: E) => void,
+): Lambda
+export function observe<A, B, C, D, E, F>(
+  deps: [
+    Observable<A> & Gettable<A>,
+    Observable<B> & Gettable<B>,
+    Observable<C> & Gettable<C>,
+    Observable<D> & Gettable<D>,
+    Observable<E> & Gettable<E>,
+    Observable<F> & Gettable<F>,
+  ],
+  observer: (
+    valueA: A,
+    valueB: B,
+    valueC: C,
+    valueD: D,
+    valueE: E,
+    valueF: F,
+  ) => void,
+): Lambda
+export function observe<A, B, C, D, E, F, G>(
+  deps: [
+    Observable<A> & Gettable<A>,
+    Observable<B> & Gettable<B>,
+    Observable<C> & Gettable<C>,
+    Observable<D> & Gettable<D>,
+    Observable<E> & Gettable<E>,
+    Observable<F> & Gettable<F>,
+    Observable<G> & Gettable<G>,
+  ],
+  observer: (
+    valueA: A,
+    valueB: B,
+    valueC: C,
+    valueD: D,
+    valueE: E,
+    valueF: F,
+    valueG: G,
+  ) => void,
+): Lambda
 export function observe(
   deps: (Observable<unknown> & Gettable<unknown>)[],
   observer: (...args: unknown[]) => unknown,
@@ -39,6 +87,8 @@ export function observe(
   const unobserves = deps.map(dep => dep.observe(notify))
 
   function notify() {
+    // Can be implemented without calling
+    // get on each dependency on every notification
     observer(...deps.map(dep => dep.get()))
   }
 
