@@ -14,13 +14,12 @@ const App = () => {
 
   // `effects` are performed once per frame
   // Useful for managing UI updates
-  effect([time], (time) => {
+  effect([time], time => {
     document.body.innerText = `${time}`
   })
 }
 
 App()
-
 ```
 
 ### More complex example:
@@ -32,15 +31,12 @@ const App = () => {
   const a = observable(1)
   const b = observable(2)
 
-  // `computeLazy` is also recomputed at most once per frame 
+  // `computeLazy` is also recomputed at most once per frame
   // but it returns `observable` that can be used later.
   // Useful for heavy computations
-  const message = computeLazy(
-    [a, b], 
-    (a, b) => `a value: ${a}, b value: ${b}`
-  )
+  const message = computeLazy([a, b], (a, b) => `a value: ${a}, b value: ${b}`)
 
-  effect([message], (message) => {
+  effect([message], message => {
     document.body.innerText = message
   })
 
@@ -64,13 +60,13 @@ App()
 
 ```ts
 import {
-  // wrapped value: 
+  // wrapped value:
   // const a = observable(1)
   // a.get() === 1
   // a.set(2)
   // a.get() === 2
   // a.observe((value) => ...)
-  observable, 
+  observable,
 
   // subscribe to many observables
   // observe([a, b, c], (aValue, bValue, cValue) => ...)
@@ -82,6 +78,8 @@ import {
   // const c = observable(3)
   // const computed = compute([a, b, c], (a, b, c) => a + b + c)
   // computed.get() === 1 + 2 + 3
+  // result is cached and won't be recomputed until
+  // any of the dependencies change
   compute,
 
   // Same as `compute` but performed once per frame at most
@@ -91,7 +89,8 @@ import {
   effect,
 
   // Instead of changing the value from 1 to 100 instantly
-  // it'll curve out smoothly changing the value each frame. Observed values can be: [1, 1,3, 2.6, ..., 100]
+  // it'll curve out smoothly changing the value each frame.
+  // Observed values can be: [1, 1,3, 2.6, ..., 100]
   animationObservable,
 } from '@pvorona/observable'
 ```
