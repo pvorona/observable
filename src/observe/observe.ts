@@ -1,13 +1,13 @@
 import { Lambda, Observable, Gettable } from '../types'
 
-export function observe<A>(deps: [], observer: (valueA: A) => void): Lambda
+export function observe(deps: [], observer: () => void): Lambda
 export function observe<A>(
   deps: [Observable<A> & Gettable<A>],
-  observer: (valueA: A) => void,
+  observer: (a: A) => void,
 ): Lambda
 export function observe<A, B>(
   deps: [Observable<A> & Gettable<A>, Observable<B> & Gettable<B>],
-  observer: (valueA: A, valueB: B) => void,
+  observer: (a: A, b: B) => void,
 ): Lambda
 export function observe<A, B, C>(
   deps: [
@@ -15,7 +15,7 @@ export function observe<A, B, C>(
     Observable<B> & Gettable<B>,
     Observable<C> & Gettable<C>,
   ],
-  observer: (valueA: A, valueB: B, valueC: C) => void,
+  observer: (a: A, b: B, c: C) => void,
 ): Lambda
 export function observe<A, B, C, D>(
   deps: [
@@ -24,7 +24,7 @@ export function observe<A, B, C, D>(
     Observable<C> & Gettable<C>,
     Observable<D> & Gettable<D>,
   ],
-  observer: (valueA: A, valueB: B, valueC: C, valueD: D) => void,
+  observer: (a: A, b: B, c: C, d: D) => void,
 ): Lambda
 export function observe<A, B, C, D, E>(
   deps: [
@@ -34,7 +34,7 @@ export function observe<A, B, C, D, E>(
     Observable<D> & Gettable<D>,
     Observable<E> & Gettable<E>,
   ],
-  observer: (valueA: A, valueB: B, valueC: C, valueD: D, valueE: E) => void,
+  observer: (a: A, b: B, c: C, d: D, e: E) => void,
 ): Lambda
 export function observe<A, B, C, D, E, F>(
   deps: [
@@ -45,14 +45,7 @@ export function observe<A, B, C, D, E, F>(
     Observable<E> & Gettable<E>,
     Observable<F> & Gettable<F>,
   ],
-  observer: (
-    valueA: A,
-    valueB: B,
-    valueC: C,
-    valueD: D,
-    valueE: E,
-    valueF: F,
-  ) => void,
+  observer: (a: A, b: B, c: C, d: D, e: E, f: F) => void,
 ): Lambda
 export function observe<A, B, C, D, E, F, G>(
   deps: [
@@ -64,23 +57,15 @@ export function observe<A, B, C, D, E, F, G>(
     Observable<F> & Gettable<F>,
     Observable<G> & Gettable<G>,
   ],
-  observer: (
-    valueA: A,
-    valueB: B,
-    valueC: C,
-    valueD: D,
-    valueE: E,
-    valueF: F,
-    valueG: G,
-  ) => void,
+  observer: (a: A, b: B, c: C, d: D, e: E, f: F, g: G) => void,
 ): Lambda
 export function observe(
   deps: (Observable<unknown> & Gettable<unknown>)[],
-  observer: (...args: unknown[]) => unknown,
+  observer: (...args: unknown[]) => void,
 ): Lambda
 export function observe(
   deps: (Observable<unknown> & Gettable<unknown>)[],
-  observer: (...args: unknown[]) => unknown,
+  observer: (...args: unknown[]) => void,
 ): Lambda {
   notify()
 
