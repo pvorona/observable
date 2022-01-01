@@ -1,25 +1,25 @@
 import { observable } from '../observable'
 import { observe } from '../observe'
-import { EagerObservable, Settable, Gettable } from '../types'
+import { EagerObservable, Settable, Gettable, Observable } from '../types'
 
 export function compute<A, O>(
-  deps: [EagerObservable<A> & Gettable<A>],
+  deps: [Observable<A> & Gettable<A>],
   compute: (valueA: A) => O,
 ): EagerObservable<O> & Gettable<O> & Settable<O>
 export function compute<A, B, O>(
-  deps: [EagerObservable<A> & Gettable<A>, EagerObservable<B> & Gettable<B>],
+  deps: [Observable<A> & Gettable<A>, Observable<B> & Gettable<B>],
   compute: (valueA: A, valueB: B) => O,
 ): EagerObservable<O> & Gettable<O> & Settable<O>
 export function compute<A, B, C, O>(
   deps: [
-    EagerObservable<A> & Gettable<A>,
-    EagerObservable<B> & Gettable<B>,
-    EagerObservable<C> & Gettable<C>,
+    Observable<A> & Gettable<A>,
+    Observable<B> & Gettable<B>,
+    Observable<C> & Gettable<C>,
   ],
   compute: (valueA: A, valueB: B, valueC: C) => O,
 ): EagerObservable<O> & Gettable<O> & Settable<O>
 export function compute(
-  deps: (EagerObservable<unknown> & Gettable<unknown>)[],
+  deps: (Observable<unknown> & Gettable<unknown>)[],
   compute: (...args: unknown[]) => unknown,
 ): EagerObservable<unknown> & Gettable<unknown> & Settable<unknown> {
   const obs = observable(null)
