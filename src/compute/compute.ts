@@ -73,19 +73,13 @@ export function compute(
   compute: (...args: unknown[]) => unknown,
 ): EagerObservable<unknown> & Gettable<unknown> {
   const obs = observable(undefined)
-  const unobserveComputation = observe(deps, (...values) => {
+
+  observe(deps, (...values) => {
     obs.set(compute(...values))
   })
 
   return {
     get: obs.get,
-    observe: observer => {
-      const unobserve = obs.observe(observer)
-
-      return () => {
-        unobserveComputation()
-        unobserve()
-      }
-    },
+    observe: obs.observe,
   }
 }
