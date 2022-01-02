@@ -1,4 +1,4 @@
-Zero dependencies high-performant abstractions for propagating state changes and managing animations. Similar to react hooks but independent.
+Zero dependencies high-performant abstractions for state management and UI updates.
 
 ### Basic usage:
 
@@ -12,8 +12,7 @@ const App = () => {
     time.set(Date.now())
   }, 1000)
 
-  // `effects` are performed once per frame
-  // Useful for managing UI updates
+  // `effect`s are performed at most once per frame
   effect([time], time => {
     document.body.innerText = `${time}`
   })
