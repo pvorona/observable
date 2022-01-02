@@ -1,6 +1,6 @@
 import { Lambda, LazyObservable, Gettable, Observable } from '../types'
 import { Transition } from '../transition'
-import { createTask, tasks, TASK, Task } from '../rendering'
+import { createTask, tasks, PRIORITY, Task } from '../rendering'
 
 export function animationObservable<A>(
   innerObservable: Observable<A> & Gettable<A>,
@@ -30,7 +30,7 @@ export function animationObservable<A>(
         // execute notify task in next frame
         // else notify
         futureTask = createTask(notify)
-        tasks[TASK.FUTURE].push(futureTask)
+        tasks[PRIORITY.FUTURE].push(futureTask)
       }
     }
 

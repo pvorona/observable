@@ -1,18 +1,18 @@
 import { Lambda } from './types'
 
-const INTERACTING = 'INTERACTING'
-const RENDERING = 'RENDERING'
-const queue = {
-  phase: INTERACTING,
-}
+// const INTERACTING = 'INTERACTING'
+// const RENDERING = 'RENDERING'
+// const queue = {
+//   phase: INTERACTING,
+// }
 
-export function createScheduleEffect(original: Lambda): Lambda {
+export function createScheduleEffect(performEffect: Lambda): Lambda {
   // export function performEffect (original: Lambda, priority = TASK.DOM_WRITE): Lambda {
   let task: Task
 
   return function scheduleEffectIfNeeded() {
     if (task === undefined || task.completed || task.cancelled) {
-      task = scheduleTask(original)
+      task = scheduleTask(performEffect)
       // task = scheduleTask(original, priority)
     }
   }
@@ -36,35 +36,36 @@ export function createScheduleEffect(original: Lambda): Lambda {
 
 let renderFrameId: undefined | number = undefined
 
-function scheduleRender() {
+function scheduleRenderIfNeeded() {
   if (renderFrameId) return
+
   renderFrameId = requestAnimationFrame(render)
 }
 
-export enum TASK {
+export enum PRIORITY {
   DOM_READ = 'DOM_READ',
   COMPUTATION = 'COMPUTATION',
   DOM_WRITE = 'DOM_WRITE',
   FUTURE = 'FUTURE',
 }
 
-const ORDER = [TASK.DOM_READ, TASK.COMPUTATION, TASK.DOM_WRITE]
+const ORDER = [PRIORITY.DOM_READ, PRIORITY.COMPUTATION, PRIORITY.DOM_WRITE]
 
 type Tasks = {
-  [value in TASK]: Task[]
+  [value in PRIORITY]: Task[]
 }
 
 export const tasks: Tasks = {
-  [TASK.DOM_READ]: [],
-  [TASK.COMPUTATION]: [],
-  [TASK.DOM_WRITE]: [],
-  [TASK.FUTURE]: [],
+  [PRIORITY.DOM_READ]: [],
+  [PRIORITY.COMPUTATION]: [],
+  [PRIORITY.DOM_WRITE]: [],
+  [PRIORITY.FUTURE]: [],
 }
 
 function render() {
   // console.log('-----------------------------')
   // console.log('FRAME START')
-  queue.phase = RENDERING
+  // queue.phase = RENDERING
   for (const order of ORDER) {
     for (const task of tasks[order]) {
       if (!task.cancelled) {
@@ -75,12 +76,12 @@ function render() {
     tasks[order] = []
   }
   renderFrameId = undefined
-  if (tasks[TASK.FUTURE].length) {
-    tasks[TASK.DOM_WRITE] = tasks[TASK.FUTURE]
-    tasks[TASK.FUTURE] = []
-    scheduleRender()
+  if (tasks[PRIORITY.FUTURE].length) {
+    tasks[PRIORITY.DOM_WRITE] = tasks[PRIORITY.FUTURE]
+    tasks[PRIORITY.FUTURE] = []
+    scheduleRenderIfNeeded()
   }
-  queue.phase = INTERACTING
+  // queue.phase = INTERACTING
   // console.log('FRAME END')
   // console.log('-----------------------------')
 }
@@ -99,9 +100,9 @@ export function createTask(callback: () => void): Task {
   }
 }
 
-function scheduleTask(callback: () => void, order = TASK.DOM_WRITE) {
+function scheduleTask(callback: () => void, priority = PRIORITY.DOM_WRITE) {
   const task = createTask(callback)
-  tasks[order].push(task)
-  scheduleRender()
+  tasks[priority].push(task)
+  scheduleRenderIfNeeded()
   return task
 }
