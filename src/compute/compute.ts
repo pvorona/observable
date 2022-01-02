@@ -72,7 +72,7 @@ export function compute(
   deps: (Observable<unknown> & Gettable<unknown>)[],
   compute: (...args: unknown[]) => unknown,
 ): EagerObservable<unknown> & Gettable<unknown> {
-  const obs = observable(undefined)
+  const obs = observable<unknown>(undefined)
 
   observe(deps, (...values) => {
     obs.set(compute(...values))
