@@ -1,10 +1,10 @@
 import { Observer, EagerObservable, Settable, Gettable } from '../types'
 
-export function observable<A>(
-  initialValue: A,
-): EagerObservable<A> & Settable<A> & Gettable<A> {
+export function observable<T>(
+  initialValue: T,
+): EagerObservable<T> & Settable<T> & Gettable<T> {
   let value = initialValue
-  const observers: Observer<A>[] = []
+  const observers: Observer<T>[] = []
 
   function notify() {
     for (const observer of observers) {
@@ -22,7 +22,7 @@ export function observable<A>(
       return value
     },
     // fire immediately can solve Gettable dependency
-    observe(observer: Observer<A>) {
+    observe(observer: Observer<T>) {
       observers.push(observer)
 
       return () => {
