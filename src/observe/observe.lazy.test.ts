@@ -1,6 +1,6 @@
 import { observable } from '../observable'
 import { computeLazy } from '../computeLazy'
-import { observe } from './observe'
+import { observeValues as observe } from './observeValues'
 
 describe('observe', () => {
   const observer = jest.fn()

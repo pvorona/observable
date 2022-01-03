@@ -1,4 +1,41 @@
+import { removeElementFromArray } from '../observable'
+import { collectValues, observe } from '../observe'
 import { Lambda, Gettable, LazyObservable, Observable } from '../types'
+
+type MissingType<T> = LazyObservable & Gettable<T> & { notifyChanged: Lambda }
+
+// type InternalState<T> = { dirty: true } | { dirty: false; value: T }
+
+const createMissingType = <T>(compute: () => T): MissingType<T> => {
+  const observers: Lambda[] = []
+  let value: T
+  let dirty = true
+
+  return {
+    get() {
+      if (dirty) {
+        value = compute()
+        dirty = false
+      }
+
+      return value
+    },
+    notifyChanged: () => {
+      dirty = true
+
+      for (const observer of observers) {
+        observer()
+      }
+    },
+    observe(observer: Lambda) {
+      observers.push(observer)
+
+      return () => {
+        removeElementFromArray(observers, observer)
+      }
+    },
+  }
+}
 
 export function computeLazy<A, V>(
   deps: [Observable<A> & Gettable<A>],
@@ -57,48 +94,13 @@ export function computeLazy<A>(
   deps: (Observable<unknown> & Gettable<unknown>)[],
   compute: (...args: unknown[]) => A,
 ): LazyObservable & Gettable<A> {
-  const observers: Lambda[] = []
-  let value: A
-  let dirty = true
+  const o: MissingType<A> = createMissingType(recompute)
 
-  for (const dep of deps) {
-    dep.observe(markDirty)
-  }
-
-  function markDirty() {
-    dirty = true
-    for (const observer of observers) {
-      observer()
-    }
-  }
+  observe(deps, o.notifyChanged)
 
   function recompute() {
-    const values = []
-    for (const dep of deps) {
-      values.push(dep.get())
-    }
-    return compute(...values)
+    return compute(...collectValues(deps))
   }
 
-  return {
-    get() {
-      if (dirty) {
-        value = recompute()
-        dirty = false
-      }
-      return value
-    },
-    observe(observer: Lambda) {
-      observers.push(observer)
-
-      return () => {
-        for (let i = 0; i < observers.length; i++) {
-          if (observers[i] === observer) {
-            observers.splice(i, 1)
-            return
-          }
-        }
-      }
-    },
-  }
+  return o
 }

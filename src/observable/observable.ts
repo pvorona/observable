@@ -22,18 +22,22 @@ export function observable<T>(
       return value
     },
     // fire immediately can solve Gettable dependency
-    observe(observer: Observer<T>) {
+    observe(observer) {
       observers.push(observer)
 
       return () => {
-        for (let i = 0; i < observers.length; i++) {
-          if (observers[i] === observer) {
-            observers.splice(i, 1)
-            return
-          }
-        }
+        removeElementFromArray(observers, observer)
       }
     },
+  }
+}
+
+export function removeElementFromArray<T>(array: T[], element: T) {
+  for (let i = 0; i < array.length; i++) {
+    if (array[i] === element) {
+      array.splice(i, 1)
+      return
+    }
   }
 }
 

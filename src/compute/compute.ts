@@ -1,5 +1,5 @@
 import { observable } from '../observable'
-import { observe } from '../observe'
+import { collectValues, observe } from '../observe'
 import { EagerObservable, Gettable, Observable } from '../types'
 
 export function compute<O>(
@@ -74,9 +74,13 @@ export function compute(
 ): EagerObservable<unknown> & Gettable<unknown> {
   const obs = observable<unknown>(undefined)
 
-  observe(deps, (...values) => {
-    obs.set(compute(...values))
-  })
+  observe(deps, recompute)
+
+  recompute()
+
+  function recompute() {
+    obs.set(compute(...collectValues(deps)))
+  }
 
   return {
     get: obs.get,
