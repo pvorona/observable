@@ -2,36 +2,36 @@ import { removeFirstElementOccurrence } from '../removeFirstElementOccurrence'
 import { collectValues } from '../collectValues'
 import { Lambda, Gettable, LazyObservable, Observable } from '../types'
 
-export function computeLazy<V>(
+export function computeLazy<T>(
   deps: [],
-  compute: () => V,
-): LazyObservable & Gettable<V>
-export function computeLazy<A, V>(
+  compute: () => T,
+): LazyObservable & Gettable<T>
+export function computeLazy<A, T>(
   deps: [Observable<A> & Gettable<A>],
-  compute: (a: A) => V,
-): LazyObservable & Gettable<V>
-export function computeLazy<A, B, V>(
+  compute: (a: A) => T,
+): LazyObservable & Gettable<T>
+export function computeLazy<A, B, T>(
   deps: [Observable<A> & Gettable<A>, Observable<B> & Gettable<B>],
-  compute: (a: A, b: B) => V,
-): LazyObservable & Gettable<V>
-export function computeLazy<A, B, C, V>(
+  compute: (a: A, b: B) => T,
+): LazyObservable & Gettable<T>
+export function computeLazy<A, B, C, T>(
   deps: [
     Observable<A> & Gettable<A>,
     Observable<B> & Gettable<B>,
     Observable<C> & Gettable<C>,
   ],
-  compute: (a: A, b: B, c: C) => V,
-): LazyObservable & Gettable<V>
-export function computeLazy<A, B, C, D, V>(
+  compute: (a: A, b: B, c: C) => T,
+): LazyObservable & Gettable<T>
+export function computeLazy<A, B, C, D, T>(
   deps: [
     Observable<A> & Gettable<A>,
     Observable<B> & Gettable<B>,
     Observable<C> & Gettable<C>,
     Observable<D> & Gettable<D>,
   ],
-  compute: (a: A, b: B, c: C, d: D) => V,
-): LazyObservable & Gettable<V>
-export function computeLazy<A, B, C, D, E, V>(
+  compute: (a: A, b: B, c: C, d: D) => T,
+): LazyObservable & Gettable<T>
+export function computeLazy<A, B, C, D, E, T>(
   deps: [
     Observable<A> & Gettable<A>,
     Observable<B> & Gettable<B>,
@@ -39,9 +39,9 @@ export function computeLazy<A, B, C, D, E, V>(
     Observable<D> & Gettable<D>,
     Observable<E> & Gettable<E>,
   ],
-  compute: (a: A, b: B, c: C, d: D, e: E) => V,
-): LazyObservable & Gettable<V>
-export function computeLazy<A, B, C, D, E, F, V>(
+  compute: (a: A, b: B, c: C, d: D, e: E) => T,
+): LazyObservable & Gettable<T>
+export function computeLazy<A, B, C, D, E, F, T>(
   deps: [
     Observable<A> & Gettable<A>,
     Observable<B> & Gettable<B>,
@@ -50,9 +50,9 @@ export function computeLazy<A, B, C, D, E, F, V>(
     Observable<E> & Gettable<E>,
     Observable<F> & Gettable<F>,
   ],
-  compute: (a: A, b: B, c: C, d: D, e: E, f: F) => V,
-): LazyObservable & Gettable<V>
-export function computeLazy<A, B, C, D, E, F, G, V>(
+  compute: (a: A, b: B, c: C, d: D, e: E, f: F) => T,
+): LazyObservable & Gettable<T>
+export function computeLazy<A, B, C, D, E, F, G, T>(
   deps: [
     Observable<A> & Gettable<A>,
     Observable<B> & Gettable<B>,
@@ -62,18 +62,18 @@ export function computeLazy<A, B, C, D, E, F, G, V>(
     Observable<F> & Gettable<F>,
     Observable<G> & Gettable<G>,
   ],
-  compute: (a: A, b: B, c: C, d: D, e: E, f: F, g: G) => V,
-): LazyObservable & Gettable<V>
-export function computeLazy<V>(
+  compute: (a: A, b: B, c: C, d: D, e: E, f: F, g: G) => T,
+): LazyObservable & Gettable<T>
+export function computeLazy<T>(
   deps: (Observable<unknown> & Gettable<unknown>)[],
-  compute: (...args: unknown[]) => V,
-): LazyObservable & Gettable<V>
-export function computeLazy<A>(
+  compute: (...args: unknown[]) => T,
+): LazyObservable & Gettable<T>
+export function computeLazy<T>(
   deps: (Observable<unknown> & Gettable<unknown>)[],
-  compute: (...args: unknown[]) => A,
-): LazyObservable & Gettable<A> {
+  compute: (...args: unknown[]) => T,
+): LazyObservable & Gettable<T> {
   const observers: Lambda[] = []
-  let value: A
+  let value: T
   let dirty = true
 
   for (const dep of deps) {

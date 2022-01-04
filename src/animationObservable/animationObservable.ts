@@ -3,11 +3,11 @@ import { Transition } from '../transition'
 import { createTask, tasks, PRIORITY, Task } from '../rendering'
 import { removeFirstElementOccurrence } from '../removeFirstElementOccurrence'
 
-export function animationObservable<A>(
-  innerObservable: Observable<A> & Gettable<A>,
-  initialTransition: Transition<A>,
+export function animationObservable<T>(
+  innerObservable: Observable<T> & Gettable<T>,
+  initialTransition: Transition<T>,
 ): LazyObservable &
-  Gettable<A> & { setTransition: (transition: Transition<A>) => void } {
+  Gettable<T> & { setTransition: (transition: Transition<T>) => void } {
   const observers: Lambda[] = []
   let futureTask: Task | undefined = undefined
   let transition = initialTransition
@@ -38,7 +38,7 @@ export function animationObservable<A>(
     return state
   }
 
-  const set = (t?: A) => {
+  const set = (t?: T) => {
     // need better check if lazy
     const target = t ? t : innerObservable.get()
     // might need cancel task here
