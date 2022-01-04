@@ -84,7 +84,7 @@ export function effect(
 ): Lambda {
   let scheduledEffect = false
 
-  const scheduleEffect = createScheduleEffect(function notify() {
+  const scheduleEffect = createScheduleEffect(function performEffect() {
     const values = collectValues(deps)
 
     observer(...values)
