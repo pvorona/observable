@@ -23,7 +23,7 @@ export function observable<T>(
       return value
     },
     // fire immediately can solve Gettable dependency
-    observe(observer: Observer<T>) {
+    observe(observer) {
       observers.push(observer)
 
       return () => {
