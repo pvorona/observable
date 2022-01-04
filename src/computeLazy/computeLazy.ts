@@ -1,3 +1,4 @@
+import { collectValues } from '../collectValues'
 import { Lambda, Gettable, LazyObservable, Observable } from '../types'
 
 export function computeLazy<A, V>(
@@ -73,10 +74,8 @@ export function computeLazy<A>(
   }
 
   function recompute() {
-    const values = []
-    for (const dep of deps) {
-      values.push(dep.get())
-    }
+    const values = collectValues(deps)
+
     return compute(...values)
   }
 

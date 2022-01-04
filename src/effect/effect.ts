@@ -1,5 +1,6 @@
 import { Lambda, Gettable, Observable } from '../types'
 import { createScheduleEffect as defaultCreateScheduleEffect } from '../rendering'
+import { collectValues } from '../collectValues'
 
 export function effect<A>(
   deps: [Observable<A> & Gettable<A>],
@@ -49,10 +50,8 @@ export function effect(
   let scheduledEffect = false
 
   const scheduleEffect = createScheduleEffect(function notify() {
-    const values = []
-    for (const dep of deps) {
-      values.push(dep.get())
-    }
+    const values = collectValues(deps)
+
     observer(...values)
     scheduledEffect = false
   })

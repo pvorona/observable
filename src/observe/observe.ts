@@ -1,3 +1,4 @@
+import { collectValues } from '../collectValues'
 import { Lambda, Observable, Gettable } from '../types'
 
 export function observe(deps: [], observer: () => void): Lambda
@@ -72,9 +73,9 @@ export function observe(
   const unobserves = deps.map(dep => dep.observe(notify))
 
   function notify() {
-    // Can be implemented without calling
-    // get on each dependency on every notification
-    observer(...deps.map(dep => dep.get()))
+    const values = collectValues(deps)
+
+    observer(...values)
   }
 
   return () => {
