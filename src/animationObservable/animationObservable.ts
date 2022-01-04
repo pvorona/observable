@@ -1,6 +1,7 @@
 import { Lambda, LazyObservable, Gettable, Observable } from '../types'
 import { Transition } from '../transition'
 import { createTask, tasks, PRIORITY, Task } from '../rendering'
+import { removeFirstElementOccurrence } from '../removeFirstElementOccurrence'
 
 export function animationObservable<A>(
   innerObservable: Observable<A> & Gettable<A>,
@@ -59,12 +60,7 @@ export function animationObservable<A>(
       observers.push(observer)
 
       return () => {
-        for (let i = 0; i < observers.length; i++) {
-          if (observers[i] === observer) {
-            observers.splice(i, 1)
-            return
-          }
-        }
+        removeFirstElementOccurrence(observers, observer)
       }
     },
     setTransition(newTransition) {

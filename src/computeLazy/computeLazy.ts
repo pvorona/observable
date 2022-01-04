@@ -1,3 +1,4 @@
+import { removeFirstElementOccurrence } from '../removeFirstElementOccurrence'
 import { collectValues } from '../collectValues'
 import { Lambda, Gettable, LazyObservable, Observable } from '../types'
 
@@ -91,12 +92,7 @@ export function computeLazy<A>(
       observers.push(observer)
 
       return () => {
-        for (let i = 0; i < observers.length; i++) {
-          if (observers[i] === observer) {
-            observers.splice(i, 1)
-            return
-          }
-        }
+        removeFirstElementOccurrence(observers, observer)
       }
     },
   }

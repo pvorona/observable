@@ -1,3 +1,4 @@
+import { removeFirstElementOccurrence } from '../removeFirstElementOccurrence'
 import { Observer, EagerObservable, Settable, Gettable } from '../types'
 
 export function observable<T>(
@@ -26,12 +27,7 @@ export function observable<T>(
       observers.push(observer)
 
       return () => {
-        for (let i = 0; i < observers.length; i++) {
-          if (observers[i] === observer) {
-            observers.splice(i, 1)
-            return
-          }
-        }
+        removeFirstElementOccurrence(observers, observer)
       }
     },
   }
