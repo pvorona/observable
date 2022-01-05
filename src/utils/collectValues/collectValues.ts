@@ -1,18 +1,18 @@
-import { Gettable } from '../types'
+import { Gettable } from '../../types'
 
-export function collectValues(observables: []): []
-export function collectValues<A>(observables: [Gettable<A>]): [A]
+export function collectValues(observables: readonly []): []
+export function collectValues<A>(observables: readonly [Gettable<A>]): [A]
 export function collectValues<A, B>(
-  observables: [Gettable<A>, Gettable<B>],
+  observables: readonly [Gettable<A>, Gettable<B>],
 ): [A, B]
 export function collectValues<A, B, C>(
-  observables: [Gettable<A>, Gettable<B>, Gettable<C>],
+  observables: readonly [Gettable<A>, Gettable<B>, Gettable<C>],
 ): [A, B, C]
 export function collectValues<A, B, C, D>(
-  observables: [Gettable<A>, Gettable<B>, Gettable<C>, Gettable<D>],
+  observables: readonly [Gettable<A>, Gettable<B>, Gettable<C>, Gettable<D>],
 ): [A, B, C, D]
 export function collectValues<A, B, C, D, E>(
-  observables: [
+  observables: readonly [
     Gettable<A>,
     Gettable<B>,
     Gettable<C>,
@@ -21,7 +21,7 @@ export function collectValues<A, B, C, D, E>(
   ],
 ): [A, B, C, D, E]
 export function collectValues<A, B, C, D, E, F>(
-  observables: [
+  observables: readonly [
     Gettable<A>,
     Gettable<B>,
     Gettable<C>,
@@ -31,7 +31,7 @@ export function collectValues<A, B, C, D, E, F>(
   ],
 ): [A, B, C, D, E, F]
 export function collectValues<A, B, C, D, E, F, G>(
-  observables: [
+  observables: readonly [
     Gettable<A>,
     Gettable<B>,
     Gettable<C>,
@@ -41,8 +41,10 @@ export function collectValues<A, B, C, D, E, F, G>(
     Gettable<G>,
   ],
 ): [A, B, C, D, E, F, G]
-export function collectValues(observables: Gettable<unknown>[]): unknown[]
-export function collectValues(observables: Gettable<unknown>[]) {
+export function collectValues(
+  observables: readonly Gettable<unknown>[],
+): unknown[]
+export function collectValues(observables: readonly Gettable<unknown>[]) {
   const values = []
 
   for (let i = 0; i < observables.length; i++) {

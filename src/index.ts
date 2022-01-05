@@ -1,4 +1,4 @@
-export * from './collectValues'
+export * from './utils'
 export * from './observable'
 export * from './observe'
 export * from './compute'

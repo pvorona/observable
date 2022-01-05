@@ -1,34 +1,53 @@
-import { collectValues } from '../collectValues'
+import { collectValues as collectValuesUtil } from '../utils'
 import { Lambda, Observable, Gettable } from '../types'
 
-export function observe(deps: [], observer: () => void): Lambda
+export type Options = {
+  readonly collectValues?: boolean
+  readonly fireImmediately?: boolean
+}
+
+const DEFAULT_OPTIONS: Options = {
+  collectValues: true,
+  fireImmediately: true,
+}
+
+// TODO fix observer type based on options
+export function observe(
+  deps: readonly [],
+  observer: () => void,
+  options?: Options,
+): Lambda
 export function observe<A>(
-  deps: [Observable<A> & Gettable<A>],
+  deps: readonly [Observable<A> & Gettable<A>],
   observer: (a: A) => void,
+  options?: Options,
 ): Lambda
 export function observe<A, B>(
-  deps: [Observable<A> & Gettable<A>, Observable<B> & Gettable<B>],
+  deps: readonly [Observable<A> & Gettable<A>, Observable<B> & Gettable<B>],
   observer: (a: A, b: B) => void,
+  options?: Options,
 ): Lambda
 export function observe<A, B, C>(
-  deps: [
+  deps: readonly [
     Observable<A> & Gettable<A>,
     Observable<B> & Gettable<B>,
     Observable<C> & Gettable<C>,
   ],
   observer: (a: A, b: B, c: C) => void,
+  options?: Options,
 ): Lambda
 export function observe<A, B, C, D>(
-  deps: [
+  deps: readonly [
     Observable<A> & Gettable<A>,
     Observable<B> & Gettable<B>,
     Observable<C> & Gettable<C>,
     Observable<D> & Gettable<D>,
   ],
   observer: (a: A, b: B, c: C, d: D) => void,
+  options?: Options,
 ): Lambda
 export function observe<A, B, C, D, E>(
-  deps: [
+  deps: readonly [
     Observable<A> & Gettable<A>,
     Observable<B> & Gettable<B>,
     Observable<C> & Gettable<C>,
@@ -36,9 +55,10 @@ export function observe<A, B, C, D, E>(
     Observable<E> & Gettable<E>,
   ],
   observer: (a: A, b: B, c: C, d: D, e: E) => void,
+  options?: Options,
 ): Lambda
 export function observe<A, B, C, D, E, F>(
-  deps: [
+  deps: readonly [
     Observable<A> & Gettable<A>,
     Observable<B> & Gettable<B>,
     Observable<C> & Gettable<C>,
@@ -47,9 +67,10 @@ export function observe<A, B, C, D, E, F>(
     Observable<F> & Gettable<F>,
   ],
   observer: (a: A, b: B, c: C, d: D, e: E, f: F) => void,
+  options?: Options,
 ): Lambda
 export function observe<A, B, C, D, E, F, G>(
-  deps: [
+  deps: readonly [
     Observable<A> & Gettable<A>,
     Observable<B> & Gettable<B>,
     Observable<C> & Gettable<C>,
@@ -59,23 +80,29 @@ export function observe<A, B, C, D, E, F, G>(
     Observable<G> & Gettable<G>,
   ],
   observer: (a: A, b: B, c: C, d: D, e: E, f: F, g: G) => void,
+  options?: Options,
 ): Lambda
 export function observe(
-  deps: (Observable<unknown> & Gettable<unknown>)[],
+  deps: readonly (Observable<unknown> & Gettable<unknown>)[],
   observer: (...args: unknown[]) => void,
+  options?: Options,
 ): Lambda
 export function observe(
-  deps: (Observable<unknown> & Gettable<unknown>)[],
+  deps: readonly (Observable<unknown> & Gettable<unknown>)[],
   observer: (...args: unknown[]) => void,
+  {
+    fireImmediately = DEFAULT_OPTIONS.fireImmediately,
+    collectValues = DEFAULT_OPTIONS.collectValues,
+  }: Options = DEFAULT_OPTIONS,
 ): Lambda {
-  notify()
+  // negate to prevent function allocation when possible
+  const decoratedObserver = !collectValues
+    ? observer
+    : () => observer(...collectValuesUtil(deps))
+  const unobserves = deps.map(dep => dep.observe(decoratedObserver))
 
-  const unobserves = deps.map(dep => dep.observe(notify))
-
-  function notify() {
-    const values = collectValues(deps)
-
-    observer(...values)
+  if (fireImmediately) {
+    decoratedObserver()
   }
 
   return () => {
