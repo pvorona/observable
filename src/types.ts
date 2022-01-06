@@ -21,9 +21,9 @@ export type Gettable<A> = {
 export type Observable<T> = EagerObservable<T> | LazyObservable
 
 export type InferTypeParams<
-  T extends (Observable<unknown> & Gettable<unknown>)[],
+  T extends Observable<unknown>[] | Gettable<unknown>[],
 > = {
-  [K in keyof T]: T[K] extends Observable<infer K> & Gettable<infer K>
+  [K in keyof T]: T[K] extends Observable<infer K> | Gettable<infer K>
     ? K
     : never
 }
