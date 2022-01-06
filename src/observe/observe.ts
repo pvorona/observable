@@ -6,33 +6,51 @@ export type Options = {
   readonly fireImmediately?: boolean
 }
 
+export type CollectingValuesOptions =
+  | (Options & {
+      readonly collectValues: true
+    })
+  | { readonly fireImmediately?: boolean }
+
+export type NotCollectingValuesOptions = Options & {
+  readonly collectValues: false
+}
+
 const DEFAULT_OPTIONS: Options = {
   collectValues: true,
   fireImmediately: true,
 }
 
-// FIX TYPE
 export function observe<T extends (Observable<unknown> & Gettable<unknown>)[]>(
   deps: readonly [...T],
   observer: (...args: InferTypeParams<T>) => void,
-  options?: Options,
+): Lambda
+export function observe<T extends (Observable<unknown> & Gettable<unknown>)[]>(
+  deps: readonly [...T],
+  observer: (...args: InferTypeParams<T>) => void,
+  options: CollectingValuesOptions,
+): Lambda
+export function observe<T extends (Observable<unknown> & Gettable<unknown>)[]>(
+  deps: readonly [...T],
+  observer: () => void,
+  options: NotCollectingValuesOptions,
 ): Lambda
 export function observe(
   deps: readonly (Observable<unknown> & Gettable<unknown>)[],
-  observer: (...args: unknown[]) => void,
+  externalObserver: (...args: unknown[]) => void,
   {
     fireImmediately = DEFAULT_OPTIONS.fireImmediately,
     collectValues = DEFAULT_OPTIONS.collectValues,
   }: Options = DEFAULT_OPTIONS,
 ): Lambda {
-  // negate to prevent function allocation when possible
-  const decoratedObserver = !collectValues
-    ? observer
-    : () => observer(...collectValuesUtil(deps))
-  const unobserves = deps.map(dep => dep.observe(decoratedObserver))
+  // Negate to prevent function allocation when possible
+  const observer = !collectValues
+    ? externalObserver
+    : () => externalObserver(...collectValuesUtil(deps))
+  const unobserves = deps.map(dep => dep.observe(observer))
 
   if (fireImmediately) {
-    decoratedObserver()
+    observer()
   }
 
   return () => {
