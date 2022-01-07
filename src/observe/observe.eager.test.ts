@@ -128,7 +128,6 @@ describe('observe', () => {
         })
 
         expect(observer).toHaveBeenCalledTimes(1)
-        expect(observer).toHaveBeenCalledWith(1, 2)
       })
 
       it('invokes observer immediately when fireImmediately=true, collectValues=false', () => {
