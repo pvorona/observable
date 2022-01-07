@@ -1,7 +1,7 @@
 import { Lambda, LazyObservable, Gettable, Observable } from '../types'
 import { Transition } from '../transition'
 import { createTask, tasks, PRIORITY, Task } from '../rendering'
-import { removeFirstElementOccurrence } from '../removeFirstElementOccurrence'
+import { removeFirstElementOccurrence } from '../utils'
 
 export function animationObservable<T>(
   innerObservable: Observable<T> & Gettable<T>,

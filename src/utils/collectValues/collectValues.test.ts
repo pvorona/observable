@@ -1,4 +1,4 @@
-import { observable } from '../observable'
+import { observable } from '../../observable'
 import { collectValues } from './collectValues'
 
 describe('with eager observables', () => {

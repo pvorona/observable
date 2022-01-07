@@ -1,4 +1,4 @@
-import { removeFirstElementOccurrence } from '../removeFirstElementOccurrence'
+import { removeFirstElementOccurrence } from '../utils'
 import { Observer, EagerObservable, Settable, Gettable } from '../types'
 
 export function observable<T>(
