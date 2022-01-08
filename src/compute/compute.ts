@@ -14,7 +14,7 @@ export function compute<
   deps: readonly [...A],
   compute: (...args: InferTypeParams<A>) => T,
 ): EagerObservable<T> & Gettable<T> {
-  const obs = observable<T>(undefined)
+  const obs = observable(undefined as unknown as T)
 
   observe(deps, (...values) => {
     obs.set(compute(...values))
