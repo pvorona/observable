@@ -14,9 +14,18 @@ export function observable<T>(
   }
 
   return {
-    set(newValue) {
-      if (newValue === value) return
+    set(newValueOrFactory) {
+      const newValue =
+        newValueOrFactory instanceof Function
+          ? newValueOrFactory(value)
+          : newValueOrFactory
+
+      if (newValue === value) {
+        return
+      }
+
       value = newValue
+
       notify()
     },
     get() {

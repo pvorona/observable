@@ -11,7 +11,7 @@ export type LazyObservable = {
 }
 
 export type Settable<A> = {
-  set: (value: A) => void
+  set: (value: A | ((prevValue: A) => A)) => void
 }
 
 export type Gettable<A> = {
