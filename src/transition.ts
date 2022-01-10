@@ -14,17 +14,13 @@ export function transition(
   duration: number,
   easing: Easing,
 ): Transition<number> {
-  let startTime = performance.now() + performance.timing.navigationStart
+  let startTime = performance.now()
   let startValue = initialValue
   let targetValue = initialValue
   let finished = true
 
   const getState = () => {
-    const progress = Math.min(
-      (performance.now() + performance.timing.navigationStart - startTime) /
-        duration,
-      1,
-    )
+    const progress = Math.min((performance.now() - startTime) / duration, 1)
 
     if (progress === 1) {
       finished = true
@@ -42,7 +38,7 @@ export function transition(
     startValue = getState()
     targetValue = target
     finished = false
-    startTime = performance.now() + performance.timing.navigationStart
+    startTime = performance.now()
   }
 
   function getTarget() {
