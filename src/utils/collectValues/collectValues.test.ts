@@ -3,7 +3,6 @@ import { collectValues } from './collectValues'
 
 describe('with eager observables', () => {
   it.each([
-    [],
     [1],
     [1, 2],
     [1, 2, 3],
