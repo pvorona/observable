@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
+    "declaration": true,
     "baseUrl": "./src",
     "paths": {
       "src/*": ["./src/*"]
     },
     "outDir": "./dist/",
     "noImplicitAny": true,
-    "module": "es6",
-    "target": "es6",
+    "module": "esnext",
+    "target": "esnext",
     "allowJs": true,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
