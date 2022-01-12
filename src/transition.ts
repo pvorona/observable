@@ -9,18 +9,20 @@ export interface Transition<A> {
 
 export type Easing = (progress: number) => number
 
+export const linear: Easing = progress => progress
+
 export function transition(
   initialValue: number,
   duration: number,
-  easing: Easing,
+  easing: Easing = linear,
 ): Transition<number> {
-  let startTime = performance.now()
+  let startTime = Date.now()
   let startValue = initialValue
   let targetValue = initialValue
   let finished = true
 
   const getState = () => {
-    const progress = Math.min((performance.now() - startTime) / duration, 1)
+    const progress = Math.min((Date.now() - startTime) / duration, 1)
 
     if (progress === 1) {
       finished = true
@@ -38,7 +40,7 @@ export function transition(
     startValue = getState()
     targetValue = target
     finished = false
-    startTime = performance.now()
+    startTime = Date.now()
   }
 
   function getTarget() {
