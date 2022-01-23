@@ -1,5 +1,5 @@
 import { Lambda, Gettable, Observable, InferTypeParams } from '../types'
-import { createScheduleEffect as defaultCreateScheduleEffect } from '../rendering'
+import { createScheduleEffect as defaultCreateScheduleEffect } from '../rendering/rendering'
 import { collectValues } from '../utils'
 import { observe } from '../observe'
 
@@ -12,6 +12,7 @@ export function effect<T extends (Observable<unknown> & Gettable<unknown>)[]>(
 ): Lambda {
   let hasScheduledEffect = false
 
+  // cancel prev task execution if new observation occurred
   const scheduleEffect = createScheduleEffect(function performEffect() {
     const values = collectValues(deps)
 
