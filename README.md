@@ -1,4 +1,4 @@
-Zero dependencies high-performant abstractions for state management and UI updates.
+Abstractions for managing state and UI updates.
 
 ### Basic usage:
 
