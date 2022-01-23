@@ -2,16 +2,28 @@
   "name": "@pvorona/observable",
   "version": "2.0.4",
   "description": "Zero dependencies high-performant abstractions for propagating state changes and managing animations.",
-  "main": "src/index.ts",
+  "module": "./dist/index.js",
+  "types": "./dist/src/index.d.ts",
   "scripts": {
+    "build": "rollup -c",
+    "prepublish": "npm run verify && npm run test && npm run build",
     "test": "jest --collectCoverage",
-    "lint": "eslint src --fix",
+    "lint": "eslint src --cache --fix",
     "prettier": "prettier src -c -w",
     "typescript": "tsc --noEmit",
-    "verify": "npm run lint && npm run prettier && npm run typescript"
+    "verify": "npm run lint && npm run prettier && npm run typescript",
+    "prepare": "husky install"
   },
   "author": "pvorona",
   "license": "ISC",
+  "lint-staged": {
+    "*.ts": [
+      "npm run verify"
+    ],
+    "*.js": [
+      "prettier -c -w"
+    ]
+  },
   "devDependencies": {
     "@babel/core": "^7.16.5",
     "@babel/preset-env": "^7.16.5",
@@ -28,7 +40,12 @@
     "faker": "^5.5.3",
     "husky": "^7.0.4",
     "jest": "^27.4.5",
+    "lint-staged": "^12.3.1",
     "prettier": "2.5.1",
+    "rollup": "^2.63.0",
+    "rollup-plugin-filesize": "^9.1.2",
+    "rollup-plugin-sourcemaps": "^0.6.3",
+    "rollup-plugin-typescript2": "^0.31.1",
     "typescript": "^4.5.4"
   },
   "repository": {
