@@ -1,6 +1,6 @@
 import { Lambda, LazyObservable, Gettable, Observable } from '../types'
 import { Transition } from '../transition'
-import { createTask, tasksByOrder, PRIORITY, Task } from '../rendering'
+import { createScheduleTaskWithCleanup, PRIORITY } from '../scheduling'
 import { removeFirstElementOccurrence } from '../utils'
 
 export function animationObservable<T>(
@@ -9,7 +9,6 @@ export function animationObservable<T>(
 ): LazyObservable &
   Gettable<T> & { setTransition: (transition: Transition<T>) => void } {
   const observers: Lambda[] = []
-  let futureTask: Task | undefined = undefined
   let transition = initialTransition
   let state = transition.getState()
 
@@ -19,6 +18,11 @@ export function animationObservable<T>(
     }
   }
 
+  const scheduleNotifyWithCleanup = createScheduleTaskWithCleanup(
+    notify,
+    PRIORITY.FUTURE,
+  )
+
   const get = () => {
     const newState = transition.getState()
     if (state !== newState) {
@@ -26,13 +30,10 @@ export function animationObservable<T>(
     }
 
     if (!transition.isFinished()) {
-      if (!futureTask || futureTask.completed) {
-        // if phase is rendering
-        // execute notify task in next frame
-        // else notify
-        futureTask = createTask(notify)
-        tasksByOrder[PRIORITY.FUTURE].push(futureTask)
-      }
+      // if phase is rendering
+      // execute notify task in next frame
+      // else notify
+      scheduleNotifyWithCleanup()
     }
 
     return state
