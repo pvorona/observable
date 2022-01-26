@@ -23,19 +23,6 @@ export const queueByPriority: QueueByPriority = {
   },
 }
 
-export function createScheduleTaskWithCleanup(
-  task: Lambda,
-  priority?: PRIORITY,
-): Lambda {
-  let cancelTask: undefined | Lambda
-
-  return function scheduleTaskAndCleanUpIfNeeded() {
-    cancelTask?.()
-
-    cancelTask = scheduleTask(task, priority)
-  }
-}
-
 export function scheduleTask(task: Lambda, priority = PRIORITY.WRITE): Lambda {
   // Capture queue of the current frame
   // to prevent modifications of the future queues
@@ -75,7 +62,6 @@ function performWork() {
       isCancelledByIndex: {},
     }
   }
-
   if (queueByPriority[PRIORITY.FUTURE].tasks.length) {
     schedulePerformWorkIfNeeded()
 

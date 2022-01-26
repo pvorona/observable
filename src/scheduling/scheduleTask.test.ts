@@ -103,10 +103,10 @@ describe('scheduleTask', () => {
 
     expect(mock).toHaveBeenCalledTimes(2)
 
-    const cancel5 = scheduleTask(() => mock('task 5'))
+    scheduleTask(() => mock('task 5'))
     const cancel6 = scheduleTask(() => mock('task 6'))
-    const cancel7 = scheduleTask(() => mock('task 7'))
-    const cancel8 = scheduleTask(() => mock('task 8'))
+    scheduleTask(() => mock('task 7'))
+    scheduleTask(() => mock('task 8'))
 
     cancel6()
     cancel1()
