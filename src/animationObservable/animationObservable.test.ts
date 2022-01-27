@@ -1,13 +1,12 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import { observable } from '../observable'
 import { groupTransition, transition } from '../transition'
 import { animationObservable } from './animationObservable'
 
 const TRANSITION_DURATION = 100
-
-// testScenario = [
-//   [0, 10, 10, 10, 10, 10, 10],
-//   [0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-// ]
 
 describe('with numbers', () => {
   beforeAll(() => {
