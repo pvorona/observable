@@ -1,5 +1,5 @@
 import { Lambda, Gettable, Observable, InferTypeParams } from '../types'
-import { createScheduleTaskWithCleanup } from '../scheduling'
+import { createScheduleTaskWithCleanup } from '@pvorona/scheduling'
 import { collectValues } from '../utils'
 import { observe } from '../observe'
 

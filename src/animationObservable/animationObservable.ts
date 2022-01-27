@@ -1,6 +1,6 @@
 import { Lambda, LazyObservable, Gettable, Observable } from '../types'
 import { Transition } from '../transition'
-import { createScheduleTaskWithCleanup, PRIORITY } from '../scheduling'
+import { createScheduleTaskWithCleanup, PRIORITY } from '@pvorona/scheduling'
 import { removeFirstElementOccurrence } from '../utils'
 
 export function animationObservable<T>(
