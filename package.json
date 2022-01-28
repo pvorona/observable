@@ -1,6 +1,6 @@
 {
   "name": "@pvorona/observable",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "Zero dependencies high-performant abstractions for propagating state changes and managing animations.",
   "module": "./dist/index.js",
   "types": "./dist/src/index.d.ts",
@@ -58,7 +58,7 @@
     "state",
     "composition"
   ],
-  "dependencies": {
-    "@pvorona/scheduling": "^0.0.1"
+  "peerDependencies": {
+    "@pvorona/scheduling": "^0.0.2"
   }
 }

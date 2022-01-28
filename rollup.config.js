@@ -7,4 +7,5 @@ export default {
   output: [{ dir: 'dist' }],
   plugins: [typescript({ declaration: true }), filesize(), sourceMaps()],
   preserveModules: true,
+  external: ['@pvorona/scheduling'],
 }
