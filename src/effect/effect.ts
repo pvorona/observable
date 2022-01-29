@@ -3,9 +3,18 @@ import { createScheduleTaskWithCleanup } from '@pvorona/scheduling'
 import { collectValues } from '../utils'
 import { observe } from '../observe'
 
+type Options = {
+  readonly fireImmediately?: boolean
+}
+
+const DEFAULT_OPTIONS: Options = {
+  fireImmediately: true,
+}
+
 export function effect<T extends (Observable<unknown> & Gettable<unknown>)[]>(
   deps: readonly [...T],
   observer: (...args: InferTypeParams<T>) => void,
+  options = DEFAULT_OPTIONS,
 ): Lambda {
   const scheduleNotifyWithCleanup = createScheduleTaskWithCleanup(
     function performEffect() {
@@ -13,5 +22,8 @@ export function effect<T extends (Observable<unknown> & Gettable<unknown>)[]>(
     },
   )
 
-  return observe(deps, scheduleNotifyWithCleanup, { collectValues: false })
+  return observe(deps, scheduleNotifyWithCleanup, {
+    collectValues: false,
+    ...options,
+  })
 }

@@ -6,13 +6,13 @@ export type Options = {
   readonly fireImmediately?: boolean
 }
 
-export type CollectingValuesOptions =
+type CollectingValuesOptions =
   | (Options & {
       readonly collectValues: true
     })
   | { readonly fireImmediately?: boolean }
 
-export type NotCollectingValuesOptions = Options & {
+type NotCollectingValuesOptions = Options & {
   readonly collectValues: false
 }
 
@@ -24,16 +24,12 @@ const DEFAULT_OPTIONS: Options = {
 export function observe<T extends (Observable<unknown> & Gettable<unknown>)[]>(
   deps: readonly [...T],
   observer: (...args: InferTypeParams<T>) => void,
-): Lambda
-export function observe<T extends (Observable<unknown> & Gettable<unknown>)[]>(
-  deps: readonly [...T],
-  observer: (...args: InferTypeParams<T>) => void,
-  options: CollectingValuesOptions,
+  options?: CollectingValuesOptions,
 ): Lambda
 export function observe<T extends (Observable<unknown> & Gettable<unknown>)[]>(
   deps: readonly [...T],
   observer: () => void,
-  options: NotCollectingValuesOptions,
+  options?: NotCollectingValuesOptions,
 ): Lambda
 export function observe(
   deps: readonly (Observable<unknown> & Gettable<unknown>)[],

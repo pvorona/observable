@@ -1,6 +1,6 @@
 {
   "name": "@pvorona/observable",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "Abstractions for managing state and UI updates.",
   "module": "./dist/index.js",
   "types": "./dist/src/index.d.ts",
