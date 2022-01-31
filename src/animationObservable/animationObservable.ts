@@ -48,6 +48,9 @@ export function animationObservable<T>(
     // }
     transition.setTarget(target)
 
+    // If transition is in progress
+    // Update to the latest value before setting new target
+    // for smoother animations
     if (!transition.isFinished()) {
       notify()
     }
