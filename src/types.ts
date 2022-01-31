@@ -27,3 +27,6 @@ export type InferTypeParams<
     ? K
     : never
 }
+
+export type InferTypeParam<T extends Observable<unknown> | Gettable<unknown>> =
+  T extends Observable<infer V> | Gettable<infer V> ? V : never
