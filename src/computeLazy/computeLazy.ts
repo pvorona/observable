@@ -42,6 +42,7 @@ export function computeLazy<
       }
       return value
     },
+    // Can be reused
     observe(observer: Lambda) {
       observers.push(observer)
 

@@ -11,6 +11,49 @@ export type Easing = (progress: number) => number
 
 export const linear: Easing = progress => progress
 
+type Options<T> = {
+  duration: number
+  initialValue: T
+  easing?: Easing
+}
+
+export function createTransition({
+  initialValue,
+  duration,
+  easing = linear,
+}: Options<number>) {
+  let startTime = performance.now()
+  let startValue = initialValue
+  let targetValue = initialValue
+  let finished = true
+
+  const get = () => {
+    const progress = Math.min((performance.now() - startTime) / duration, 1)
+
+    if (progress === 1) {
+      finished = true
+    }
+    return startValue + (targetValue - startValue) * easing(progress)
+  }
+  const isFinished = () => finished
+  const setTarget = (newTargetValue: number) => {
+    if (newTargetValue === targetValue) {
+      return
+    }
+
+    startValue = get()
+    targetValue = newTargetValue
+    finished = false
+    startTime = performance.now()
+  }
+
+  return {
+    get,
+    isFinished,
+    setTarget,
+  }
+}
+
 export function transition(
   initialValue: number,
   duration: number,
