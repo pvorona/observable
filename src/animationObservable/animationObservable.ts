@@ -12,6 +12,7 @@ export function animationObservable<T>(
   let transition = initialTransition
   let state = transition.getState()
 
+  // can be extracted to reuse
   function notify() {
     for (const observer of observers) {
       observer()
@@ -20,6 +21,7 @@ export function animationObservable<T>(
 
   const scheduleNotifyWithCleanup = createScheduleTaskWithCleanup(
     notify,
+    // Should be current frame
     PRIORITY.FUTURE,
   )
 
@@ -60,6 +62,7 @@ export function animationObservable<T>(
 
   return {
     get,
+    // can be reused
     observe(observer) {
       observers.push(observer)
 
